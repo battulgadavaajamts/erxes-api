@@ -3,7 +3,7 @@
   "version": "0.17.6",
   "description": "GraphQL API for erxes main project",
   "homepage": "https://erxes.io",
-  "repository": "https://github.com/erxes/erxes-api",
+  "repository": "https://github.com/battulgadavaajamts/erxes-api",
   "bugs": "https://github.com/erxes/erxes-api/issues",
   "keywords": [
     "node",
