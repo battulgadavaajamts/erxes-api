@@ -1,3 +1,15 @@
+## [0.18.8](https://github.com/battulgadavaajamts/erxes-api/compare/0.18.7...0.18.8) (2020-09-03)
+
+
+### Features
+
+* **elasticsearch:** added ability to use https://elasticsearch.erxes.io ([2b6c4e1](https://github.com/battulgadavaajamts/erxes-api/commit/2b6c4e1803fb95149074b24ebc7c484f8bb34136))
+
+
+### Performance Improvements
+
+* **task:** show brief conversation in task log ([18ae259](https://github.com/battulgadavaajamts/erxes-api/commit/18ae2592b833baea166a4eb87b10e05dc5277a1c)), closes [Close#2242](https://github.com/Close/issues/2242)
+
 ## [0.18.7](https://github.com/battulgadavaajamts/erxes-api/compare/0.18.6...0.18.7) (2020-09-03)
 
 ## [0.18.6](https://github.com/battulgadavaajamts/erxes-api/compare/0.18.5...0.18.6) (2020-09-03)
