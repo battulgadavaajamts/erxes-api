@@ -1,0 +1,17 @@
+name: ElkSyncer CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - 'elkSyncer/**'
+      - '.github/workflows/elk-syncer.yaml'
+
+jobs:
+  elkSyncer:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
