@@ -1,3 +1,5 @@
+## [0.19.1](https://github.com/battulgadavaajamts/erxes-api/compare/0.19.0...0.19.1) (2020-09-03)
+
 # [0.19.0](https://github.com/battulgadavaajamts/erxes-api/compare/0.18.9...0.19.0) (2020-09-03)
 
 ## [0.18.9](https://github.com/battulgadavaajamts/erxes-api/compare/0.18.8...0.18.9) (2020-09-03)
