@@ -15,8 +15,6 @@ on:
       - "!**.md"
       - "!base.Dockerfile"
       - "!base.Dockerfile.dockerignore"
-    tags:
-      - "*"
   pull_request:
     branches:
       - master
@@ -39,8 +37,6 @@ jobs:
   api:
     runs-on: ubuntu-18.04
 
-    # name: Node ${{ matrix.node-version }}
-
     services:
       mongodb:
         image: mongo:3.6
@@ -48,72 +44,34 @@ jobs:
           - 27017:27017
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Use Node.js 12.16.x
+      - name: Use Node.js 12.18.x
         uses: actions/setup-node@v1
         with:
-          node-version: 12.16.x
+          node-version: 12.18.x
 
       # https://github.com/actions/cache/blob/master/examples.md#node---yarn
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: Cache Node.js modules
+      - uses: actions/cache@v2
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        uses: actions/cache@v1
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-api-${{ hashFiles('yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-api-${{ hashFiles('yarn.lock') }}
             ${{ runner.os }}-yarn-api-
             ${{ runner.os }}-yarn-
 
-      - name: Install
+      - name: Install dependencies
         run: |
           yarn install
-
-      - name: Lint
-        run: |
-          yarn lint
-
-      - name: Tsc
-        run: |
-          yarn tsc -p tsconfig.prod.json
-
-      - name: Test
-        run: |
-          yarn test
-        env:
-          MONGO_URL: mongodb://localhost/erxes
-          TEST_MONGO_URL: mongodb://localhost/test
-          JWT_TOKEN_SECRET: token
-          MAIN_APP_DOMAIN: http://localhost:3000
-          RABBITMQ_HOST: amqp://localhost
 
       - name: Build
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'push'
         run: |
+          rm -rf node_modules
+          yarn install --production
           yarn build
-
-      - name: Prepare release assets [tag]
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          tar -zcf erxes-api-${GITHUB_REF#refs/tags/}.tar.gz dist node_modules db-migrate-store.js package.json
-
-      - name: Get release version [tag]
-        id: get_release_version
-        if: startsWith(github.ref, 'refs/tags/')
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
-
-      - name: Upload release assets [tag]
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: ./erxes-api-${{ steps.get_release_version.outputs.VERSION }}.tar.gz
-          name: Release ${{ steps.get_release_version.outputs.VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
